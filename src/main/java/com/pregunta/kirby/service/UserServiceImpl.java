@@ -5,13 +5,17 @@ import com.pregunta.kirby.dtos.user.LoginUserDTO;
 import com.pregunta.kirby.exception.*;
 import com.pregunta.kirby.model.Country;
 import com.pregunta.kirby.model.Gender;
+import com.pregunta.kirby.model.Game;
 import com.pregunta.kirby.model.User;
 import com.pregunta.kirby.repository.CountryRepository;
+import com.pregunta.kirby.repository.GameRepository;
 import com.pregunta.kirby.repository.GenderRepository;
 import com.pregunta.kirby.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,12 +23,14 @@ public class UserServiceImpl implements UserService {
     final private UserRepository userRepository;
     private final GenderRepository genderRepository;
     private final CountryRepository countryRepository;
+    private final GameRepository gameRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, GenderRepository genderRepository, CountryRepository countryRepository) {
+    public UserServiceImpl(UserRepository userRepository, GenderRepository genderRepository, CountryRepository countryRepository, GameRepository gameRepository) {
         this.userRepository = userRepository;
         this.genderRepository = genderRepository;
         this.countryRepository = countryRepository;
+        this.gameRepository = gameRepository;
     }
 
     @Override
@@ -110,5 +116,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(Integer id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<User> findTopThreeUsersWithTheHighestScore() {
+        return userRepository.findTop3ByOrderByScoreDesc();
+    }
+
+    @Override
+    public Game findTheLastUserGame(Integer userId) {
+        return gameRepository.findTopByUserIdOrderByIdDesc(userId);
+    }
+
+    @Override
+    public List<Game> findUserHistory(Integer userId) {
+        return gameRepository.findAllByUserIdOrderById(userId);
     }
 }

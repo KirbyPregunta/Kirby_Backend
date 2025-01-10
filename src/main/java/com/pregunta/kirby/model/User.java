@@ -26,6 +26,8 @@ public class User extends BaseEntity {
     @Column(unique=true)
     private String email;
 
+    private Integer score;
+
     private String profilePhoto;
 
     @ManyToOne

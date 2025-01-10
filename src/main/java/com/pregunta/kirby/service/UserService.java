@@ -2,11 +2,13 @@ package com.pregunta.kirby.service;
 
 import com.pregunta.kirby.dtos.user.CreateUserDTO;
 import com.pregunta.kirby.dtos.user.LoginUserDTO;
-import com.pregunta.kirby.dtos.user.UserDTO;
 import com.pregunta.kirby.exception.*;
 import com.pregunta.kirby.model.Country;
 import com.pregunta.kirby.model.Gender;
+import com.pregunta.kirby.model.Game;
 import com.pregunta.kirby.model.User;
+
+import java.util.List;
 
 public interface UserService {
     void validateFieldsRegister(CreateUserDTO userDTO) throws EmptyFieldException;
@@ -30,4 +32,10 @@ public interface UserService {
     void validateFieldsLogin(LoginUserDTO loginDTO) throws EmptyFieldException;
 
     User findUserById(Integer id);
+
+    List<User> findTopThreeUsersWithTheHighestScore();
+
+    Game findTheLastUserGame(Integer userId);
+
+    List<Game> findUserHistory(Integer userId);
 }
